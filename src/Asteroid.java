@@ -1,3 +1,4 @@
+// TODO offset base asteroid model generation
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.*;
 

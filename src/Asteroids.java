@@ -1,14 +1,13 @@
-// TODO fix ast overflow
 import org.newdawn.slick.*;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import org.newdawn.slick.geom.*;
 
 class Asteroids extends BasicGame implements KeyListener{
 	private long ms = 0;
 	public static boolean debug = false;
 	private Player p;
-	private ArrayList<Asteroid> ast;
+	private LinkedList<Asteroid> ast;
 
 	public Asteroids()
 	{
@@ -31,7 +30,7 @@ class Asteroids extends BasicGame implements KeyListener{
 	public void init(GameContainer container) throws SlickException
 	{
 		p = new Player(100, 100);
-		ast = new ArrayList<Asteroid>();
+		ast = new LinkedList<Asteroid>();
 	}
 
 	@Override
@@ -57,11 +56,13 @@ class Asteroids extends BasicGame implements KeyListener{
 		if((ms+delta)/1000 > ms/1000)
 			ast.add(new Asteroid(0f, 100f, new Vector2f(100f, 0f)));
 
-
-
 		p.update(container, delta);
-		for(Asteroid a : ast)
-			a.update(container, delta);
+		for(int i = 0; i < ast.size(); i++) {
+			if(inView(ast.get(i), container))
+				ast.get(i).update(container, delta);
+			else
+				ast.remove(i);
+		}
 		ms += delta;
 	}
 
@@ -71,5 +72,11 @@ class Asteroids extends BasicGame implements KeyListener{
 			case 'd': Asteroids.debug = !Asteroids.debug; break;
 			default:
 		}
+	}
+
+	private <U extends Entity> boolean inView(U e, GameContainer container)
+	{
+		return e.x >= 0f && e.x <= container.getWidth() 
+			&& e.y >= 0f && e.y <= container.getHeight();
 	}
 }

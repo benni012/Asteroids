@@ -8,4 +8,6 @@ hs_err_pid*
 
 *.swp
 *.swo
+.swp
+.swo
 .fuse*
