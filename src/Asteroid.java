@@ -24,8 +24,8 @@ class Asteroid extends Entity implements Collidable
 
 	private void init()
 	{
-		//model = Asteroid.generateModel();	
-		model = new Polygon(new float[] {0f, 0f, 1f, 0f, 1f, 1f, 0f, 1f, 0f, 0f});
+		model = Asteroid.generateModel();
+		cb = new CollisionBox(model.getMinX(), model.getMinY(), model.getWidth(), model.getHeight());
 	}
 
 	public <U extends Entity & Collidable> boolean collides(U e)
@@ -50,10 +50,7 @@ class Asteroid extends Entity implements Collidable
 		model.setCenterX(x);
 		model.setCenterY(y);
 
-		//System.out.println("X: " + x);
-		//System.out.println("Y: " + y);
-
-		// Transform and draw the polygon
+		// Draw the polygon
 		g.draw(model);
 		
 		if(Asteroids.debug) {
@@ -62,5 +59,18 @@ class Asteroid extends Entity implements Collidable
 			// Draw a line for the vel vector
 			g.drawLine(x, y, x+velDir.x, y+velDir.y);
 		}
+	}
+
+	public static Polygon generateModel()
+	{
+		float[] pts = new float[20];
+		for(int i = 0; i < 10; i++) {
+			float x = 5-Math.abs(i - 5);
+			float y = 5f + (i-5 > 0 ? 1 : -1) * (float) Math.random() * 5f;
+			//System.out.printf("(%.3f|%.3f)\n", x, y);
+			pts[2*i] = x;
+			pts[2*i + 1] = y;
+		}
+		return (Polygon)new Polygon(pts).transform(Transform.createScaleTransform(10f, 10f));
 	}
 }
