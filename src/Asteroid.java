@@ -71,6 +71,7 @@ class Asteroid extends Entity implements Collidable
 			pts[2*i] = x;
 			pts[2*i + 1] = y;
 		}
-		return (Polygon)new Polygon(pts).transform(Transform.createScaleTransform(100f, 100f));
+		float scale = 50f + (float)Math.random() * 50f;
+		return (Polygon)new Polygon(pts).transform(Transform.createScaleTransform(scale, scale));
 	}
 }
