@@ -1,1 +1,2 @@
+[ -d classes ] || mkdir classes
 javac -cp "src/*:lib/*" -d classes src/*.java
