@@ -65,12 +65,12 @@ class Asteroid extends Entity implements Collidable
 	{
 		float[] pts = new float[20];
 		for(int i = 0; i < 10; i++) {
-			float x = 5-Math.abs(i - 5);
-			float y = 5f + (i-5 > 0 ? 1 : -1) * (float) Math.random() * 5f;
+			float x = 0.5f - Math.abs(i/10f - 0.5f);
+			float y = 0.5f + (i-5 > 0 ? 1 : -1) * (float) Math.random() * 0.5f;
 			//System.out.printf("(%.3f|%.3f)\n", x, y);
 			pts[2*i] = x;
 			pts[2*i + 1] = y;
 		}
-		return (Polygon)new Polygon(pts).transform(Transform.createScaleTransform(10f, 10f));
+		return (Polygon)new Polygon(pts).transform(Transform.createScaleTransform(100f, 100f));
 	}
 }
