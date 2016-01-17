@@ -10,8 +10,6 @@ class Player extends Entity implements Collidable
 	private float rotation = 0.0f;
 	private final float ACCELERATION = 150f;
 
-	private Polygon model;
-
 	public Player(float x, float y)
 	{
 		super(x, y);

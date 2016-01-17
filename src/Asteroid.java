@@ -4,7 +4,6 @@ import org.newdawn.slick.geom.*;
 
 class Asteroid extends Entity implements Collidable
 {
-	private Polygon model;
 	private Vector2f velDir;
 
 	public Asteroid(float x, float y)

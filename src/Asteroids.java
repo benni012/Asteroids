@@ -76,7 +76,8 @@ class Asteroids extends BasicGame implements KeyListener{
 
 	private <U extends Entity> boolean inView(U e, GameContainer container)
 	{
-		return e.x >= 0f && e.x <= container.getWidth() 
-			&& e.y >= 0f && e.y <= container.getHeight();
+		Polygon model = e.getModel();
+		return model.getMaxX() >= 0f && model.getMinX() <= container.getWidth() 
+			&& model.getMaxY() >= 0f && model.getMinY() <= container.getHeight();
 	}
 }
