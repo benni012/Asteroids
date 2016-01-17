@@ -4,6 +4,13 @@ import org.newdawn.slick.geom.*;
 
 class Asteroid extends Entity implements Collidable
 {
+	public static final int GEN_RANDOM = 0;
+	public static final int GEN_LINEAR = 1;
+	public static final int GEN_SINUS  = 2;
+	private int mode;
+
+	private float scale;
+
 	private Vector2f velDir;
 
 	public Asteroid(float x, float y)
@@ -14,17 +21,19 @@ class Asteroid extends Entity implements Collidable
 		init();
 	}
 
-	public Asteroid(float x, float y, Vector2f velDir)
+	public Asteroid(float x, float y, Vector2f velDir, int mode, float scale)
 	{
 		super(x, y);
 
 		this.velDir = velDir;
+		this.mode = mode;
+		this.scale = scale;
 		init();
 	}
 
 	private void init()
 	{
-		model = Asteroid.generateModel();
+		model = Asteroid.generateModel(20, mode, 0.1f);
 		cb = new CollisionBox(model.getMinX(), model.getMinY(), model.getWidth(), model.getHeight());
 	}
 
@@ -61,12 +70,37 @@ class Asteroid extends Entity implements Collidable
 		}
 	}
 
-	public static Polygon generateModel()
+	public static Polygon generateModel(int steps, int mode, float randomness)
 	{
-		float[] pts = new float[20];
-		for(int i = 0; i < 10; i++) {
-			float x = 0.5f - Math.abs(i/10f - 0.5f);
-			float y = 0.5f + (i-5 > 0 ? 1 : -1) * (float) Math.random() * 0.5f;
+		if(randomness < 0f) randomness = 0f;
+		else if(randomness > 1f) randomness = 1f;
+		if(steps < 3) steps = 3;
+		if(mode < 0 || mode > 3) mode = GEN_RANDOM;
+
+		final int STEPS = steps;
+		float[] pts = new float[STEPS*2];
+
+		for(int i = 0; i < STEPS; i++) {
+			float p = i/(STEPS - 1f);
+
+			float x = 0f, y = 0f;
+			float roffX = (float)(2 * Math.random() - 1f) * randomness;
+			float roffY = (float)(2 * Math.random() - 1f) * randomness;
+			switch(mode) {
+				case GEN_RANDOM:
+					x = 1f - 2f * Math.abs(p - 0.5f);
+					y = 0.5f + (p > 0.5f ? 1 : -1) * (float)Math.random() * 0.5f;
+					break;
+				case GEN_LINEAR:
+					x = 1f - 2f * Math.abs(p - 0.5f) + roffX;
+					y = Math.abs(1f - 2f * (float)Math.abs(p - 0.25f)) + roffY;
+					break;
+				case GEN_SINUS:
+					x = (float)Math.cos(p*2*Math.PI)/2 + 0.5f + roffX;
+					y = (float)Math.sin(p*2*Math.PI)/2 + 0.5f + roffY;
+					break;
+			}
+
 			//System.out.printf("(%.3f|%.3f)\n", x, y);
 			pts[2*i] = x;
 			pts[2*i + 1] = y;

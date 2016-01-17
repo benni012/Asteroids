@@ -54,7 +54,7 @@ class Asteroids extends BasicGame implements KeyListener{
 			p.accelerate(delta);
 
 		if((ms+delta)/1000 > ms/1000)
-			ast.add(new Asteroid(0f, 100f, new Vector2f(100f, 0f)));
+			ast.add(new Asteroid(0f, 100f, new Vector2f(100f, 0f), (int) (Math.random() * 3), 50f + (float)Math.random() * 50f));
 
 		p.update(container, delta);
 		for(int i = 0; i < ast.size(); i++) {
